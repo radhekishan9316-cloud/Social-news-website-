@@ -1,355 +1,768 @@
-```html
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#10264a">
-  <meta name="description" content="Social News - News, education, government schemes, sports, entertainment and useful daily tools in one place.">
-  <title>Social News | आपकी दुनिया, आपकी खबरें</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    :root {
-      --navy: #10264a;
-      --blue: #1769e0;
-      --orange: #ff8a25;
-      --bg: #f3f6fb;
-      --card: #ffffff;
-      --text: #17243a;
-      --muted: #64748b;
-      --border: #e0e7f0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071a31">
+<meta name="description" content="Social News - ताज़ा खबरें, लाइव वीडियो, शिक्षा, सरकारी नौकरी, खेल और उपयोगी जानकारियाँ।">
+<title>Social News | हर जरूरी खबर, एक ही जगह</title>
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; scroll-padding-top: 85px; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Arial, "Noto Sans Devanagari", sans-serif;
-      line-height: 1.6;
-    }
-    a { color: var(--blue); }
-    button, input, select { font: inherit; }
-    button { cursor: pointer; }
-    .container { width: min(1120px, 92%); margin: auto; }
-    .topbar { background: var(--navy); color: white; padding: 7px 0; font-size: 13px; }
-    header {
-      background: white;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      box-shadow: 0 3px 14px #10264a12;
-    }
-    .head {
-      min-height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-      padding: 12px 0;
-    }
-    .brand { color: var(--navy); text-decoration: none; font-size: 25px; font-weight: 800; }
-    .brand span { color: var(--orange); }
-    nav { display: flex; gap: 15px; flex-wrap: wrap; }
-    nav a { text-decoration: none; font-size: 14px; font-weight: 700; color: var(--navy); }
-    nav a:hover { color: var(--orange); }
-    .hero {
-      padding: 48px 0;
-      background: linear-gradient(120deg, #10264a, #1769e0);
-      color: white;
-    }
-    .hero h1 { font-size: clamp(29px, 5vw, 46px); line-height: 1.2; margin: 0 0 15px; }
-    .hero p { max-width: 650px; color: #e6efff; }
-    .button {
-      display: inline-block;
-      padding: 11px 17px;
-      border: 0;
-      border-radius: 9px;
-      background: var(--orange);
-      color: #1d2b43;
-      font-weight: 800;
-      text-decoration: none;
-    }
-    .section { padding: 35px 0; }
-    .section h2 { margin: 0 0 8px; font-size: 26px; }
-    .sub { color: var(--muted); margin: 0 0 20px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 17px; }
-    .card {
-      background: var(--card);
-      padding: 20px;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      box-shadow: 0 5px 18px #10264a08;
-      min-width: 0;
-    }
-    .card h3 { margin: 4px 0 9px; }
-    .card p { color: var(--muted); }
-    .emoji { font-size: 30px; }
-    .pill { display: inline-block; background: #eaf1ff; color: #174ea6; padding: 4px 9px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-    .searchbar { display: flex; gap: 9px; margin: 18px 0; }
-    .searchbar input, .tool-input, select {
-      width: 100%; min-width: 0; padding: 12px;
-      border: 1px solid #ccd6e5; border-radius: 9px; background: white;
-    }
-    .searchbar button, .action {
-      border: 0; border-radius: 9px; padding: 11px 15px;
-      background: var(--blue); color: white; font-weight: 700;
-    }
-    .news-card { display: flex; flex-direction: column; }
-    .news-card .action { align-self: flex-start; margin-top: auto; }
-    .video-placeholder {
-      width: 100%; min-height: 190px; border: 0; border-radius: 12px;
-      background: #101827; color: white; font-size: 18px; font-weight: bold;
-    }
-    .notice { padding: 13px; background: #fff5e9; border-left: 4px solid var(--orange); border-radius: 8px; }
-    .linklist { display: grid; gap: 10px; }
-    .linklist a { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 13px; text-decoration: none; font-weight: 700; }
-    .tool-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-    .tool-row > * { flex: 1 1 120px; }
-    footer { margin-top: 25px; background: var(--navy); color: white; padding: 28px 0; }
-    footer a { color: #ffd09b; margin-right: 14px; }
-    #toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 30; max-width: 90%; background: #18243a; color: white; padding: 12px 18px; border-radius: 10px; box-shadow: 0 5px 20px #0003; }
-    [hidden] { display: none !important; }
-    body.dark { --bg: #101827; --card: #18243a; --text: #f1f5f9; --muted: #b7c3d5; --border: #34435a; }
-    body.dark header, body.dark .searchbar input, body.dark .tool-input, body.dark select, body.dark .linklist a { background: #18243a; color: #f1f5f9; }
-    body.dark nav a, body.dark .brand { color: #f1f5f9; }
-    @media (max-width: 650px) {
-      .head { align-items: flex-start; }
-      nav { gap: 10px; }
-      nav a { font-size: 12px; }
-      .searchbar { flex-direction: column; }
-      .hero { padding: 35px 0; }
-    }
-  </style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --bg:#071a31;
+  --panel:#0d2542;
+  --panel2:#132e50;
+  --red:#f52c50;
+  --text:#f7f9ff;
+  --muted:#afc2dc;
+  --border:#284363;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:130px}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Hind',sans-serif;
+  line-height:1.6;
+}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{
+  outline:2px solid #ff7188;
+  outline-offset:3px
+}
+.container{width:min(1180px,92%);margin:auto}
+.ticker{
+  display:flex;align-items:center;overflow:hidden;
+  background:#0b2039;border-bottom:1px solid var(--border);
+  white-space:nowrap
+}
+.ticker-label{
+  flex-shrink:0;background:var(--red);padding:9px 22px;
+  font-family:Inter,sans-serif;font-size:13px;
+  font-weight:800;letter-spacing:1px
+}
+.ticker-text{padding:8px 18px;color:#e5edf9}
+.header{border-bottom:1px solid var(--border)}
+.brand-row{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:18px;padding:25px 0
+}
+.brand{display:flex;align-items:center;gap:17px}
+.logo{
+  display:grid;place-items:center;width:78px;height:78px;
+  flex-shrink:0;border-radius:24px;
+  background:linear-gradient(140deg,#ff365c,#e70b38);
+  box-shadow:0 12px 32px #f52c5027;font-size:37px
+}
+.brand h1{
+  margin:0;font:800 36px/1.2 Inter,sans-serif;
+  letter-spacing:-1.5px
+}
+.brand h1 span{color:var(--red)}
+.tagline{
+  margin-top:9px;color:var(--muted);font:500 13px Inter,sans-serif;
+  letter-spacing:3px
+}
+.theme-btn{
+  width:58px;height:58px;border:1px solid #345477;
+  border-radius:19px;background:var(--panel2);color:var(--text);
+  font-size:24px
+}
+.search-wrap{padding:0 0 25px}
+.search-box{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px 10px 22px;
+  background:var(--panel2);border:1px solid var(--border);
+  border-radius:25px
+}
+.search-icon{font-size:25px;color:var(--muted)}
+.search-box input{
+  flex:1;min-width:0;border:0;outline:0;
+  background:transparent;color:var(--text);font-size:19px
+}
+.search-box input::placeholder{color:var(--muted)}
+.search-box button{
+  border:0;border-radius:17px;padding:13px 24px;
+  background:#24466e;color:white
+}
+.nav{
+  position:sticky;top:0;z-index:10;
+  background:var(--bg);border-bottom:1px solid var(--border)
+}
+.nav-inner{
+  display:flex;overflow-x:auto;scrollbar-width:thin;
+  scrollbar-color:#405774 transparent
+}
+.nav a{
+  flex-shrink:0;padding:17px 23px;
+  font-size:18px;color:#e2eaf7;
+  border-bottom:4px solid transparent
+}
+.nav a.active,.nav a:hover{
+  background:var(--red);border-bottom-color:#ff8296
+}
+.hero{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(ellipse at 85% 25%,#1e5479 0,transparent 48%),
+    linear-gradient(120deg,#071b33,#103758 80%,#0a2543);
+  padding:75px 0 65px
+}
+.hero:after{
+  content:"";position:absolute;width:400px;height:400px;
+  border:1px solid #ffffff0b;border-radius:50%;
+  right:-180px;bottom:-200px;pointer-events:none
+}
+.pill{
+  display:inline-flex;align-items:center;gap:9px;
+  border:1px solid #a93258;border-radius:14px;
+  padding:9px 15px;background:#42263b80;
+  color:#ffb5c4;font:700 13px Inter,sans-serif;
+  letter-spacing:1px
+}
+.dot{
+  width:11px;height:11px;background:#ff4265;
+  border-radius:50%;box-shadow:0 0 0 6px #ff42652b
+}
+.hero h2{
+  margin:34px 0 27px;max-width:850px;
+  font-size:clamp(40px,7.2vw,76px);
+  font-weight:700;line-height:1.25;letter-spacing:-1.5px
+}
+.hero h2 span{color:#ff4b6c}
+.hero p{
+  max-width:750px;margin:0;color:var(--muted);
+  font-size:clamp(19px,2.8vw,29px);line-height:1.8
+}
+.actions{display:flex;gap:16px;flex-wrap:wrap;margin-top:43px}
+.btn{
+  display:inline-flex;justify-content:center;align-items:center;
+  gap:8px;border:1px solid transparent;border-radius:18px;
+  padding:18px 26px;font-weight:700;font-size:19px;
+  transition:transform .2s,background .2s
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--red);color:white}
+.btn-outline{border-color:#6c8eae;background:#ffffff08;color:white}
+.stats{display:flex;gap:25px;flex-wrap:wrap;margin-top:48px;color:var(--muted)}
+.stats strong{color:white;margin-right:8px}
+.section{padding:52px 0}
+.section-head{
+  display:flex;justify-content:space-between;align-items:end;
+  gap:15px;margin-bottom:25px
+}
+.eyebrow{
+  color:#ff6b84;font:700 12px Inter,sans-serif;
+  letter-spacing:2px;text-transform:uppercase
+}
+.section h2{font-size:clamp(26px,4vw,38px);line-height:1.3;margin:8px 0}
+.section-head p{color:var(--muted);margin:5px 0}
+.text-link{color:#ff738b;font-weight:600}
+.feature{
+  position:relative;overflow:hidden;min-height:300px;
+  padding:30px;border:1px solid #527594;border-radius:36px;
+  background:
+    radial-gradient(ellipse at 50% 80%,#145183,#0b2543 62%);
+}
+.feature-top{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.feature-top small{color:var(--muted);letter-spacing:3px}
+.globe{
+  text-align:center;font-size:100px;line-height:1.4;
+  color:#05a6df;opacity:.8
+}
+.feature h3{font-size:clamp(24px,4vw,36px);margin:0}
+.feature p{color:var(--muted)}
+.grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px
+}
+.card{
+  overflow:hidden;border:1px solid var(--border);
+  border-radius:22px;background:var(--panel);
+  transition:transform .2s,border-color .2s
+}
+.card:hover{transform:translateY(-4px);border-color:#547ba2}
+.card-art{
+  min-height:145px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#153e63,#102641);
+  font-size:54px
+}
+.card-body{padding:19px}
+.category{color:#ff7089;font-size:13px;font-weight:700}
+.card h3{margin:8px 0;font-size:21px;line-height:1.5}
+.card p{margin:8px 0;color:var(--muted)}
+.meta{font-size:12px;color:var(--muted)}
+.card-actions{display:flex;gap:10px;margin-top:15px}
+.small-btn{
+  padding:7px 12px;border-radius:10px;border:1px solid var(--border);
+  background:transparent;color:var(--text)
+}
+.empty{padding:30px;text-align:center;color:var(--muted);grid-column:1/-1}
+.category-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px
+}
+.category-card{
+  padding:22px 15px;border:1px solid var(--border);
+  background:var(--panel);border-radius:18px;text-align:center
+}
+.category-card .emoji{font-size:31px}
+.category-card h3{margin:8px 0 2px;font-size:17px}
+.category-card p{margin:0;color:var(--muted);font-size:13px}
+.live-panel{
+  padding:25px;border:1px solid var(--border);
+  background:linear-gradient(135deg,#102d4d,#091d35);
+  border-radius:25px
+}
+.video{
+  display:block;width:100%;aspect-ratio:16/9;
+  border-radius:15px;background:#020812
+}
+.live-note{color:var(--muted);font-size:14px}
+.quiz-question{font-size:21px;font-weight:600}
+.quiz-options{display:grid;gap:10px;margin:18px 0}
+.quiz-option{
+  padding:13px;border:1px solid var(--border);
+  border-radius:12px;background:var(--panel2);color:var(--text);
+  text-align:left
+}
+.quiz-option:hover{border-color:var(--red)}
+.quiz-result{color:#80e7a2;font-weight:600}
+.newsletter{
+  padding:35px;border:1px solid var(--border);
+  border-radius:25px;background:var(--panel)
+}
+.newsletter p{color:var(--muted)}
+.newsletter form{display:flex;gap:10px;flex-wrap:wrap}
+.newsletter input{
+  flex:1;min-width:180px;padding:14px;border:1px solid var(--border);
+  border-radius:12px;background:var(--bg);color:var(--text)
+}
+.newsletter button{
+  padding:13px 20px;border:0;border-radius:12px;
+  background:var(--red);color:white;font-weight:700
+}
+.footer{border-top:1px solid var(--border);padding:38px 0;color:var(--muted)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:25px}
+.footer h3{color:var(--text)}
+.footer a{display:block;margin:7px 0}
+.footer a:hover{color:#ff7189}
+.ad-slot{
+  min-height:90px;display:grid;place-items:center;
+  margin:20px auto;border:1px dashed #39506a;
+  border-radius:12px;color:var(--muted);font-size:13px
+}
+.light{
+  --bg:#f2f6fc;--panel:#fff;--panel2:#e4edf8;
+  --text:#10243d;--muted:#536984;--border:#d0ddeb
+}
+.light .hero{background:radial-gradient(ellipse at 85% 25%,#c4e4f8,transparent 48%),linear-gradient(120deg,#e3effb,#d6eaff)}
+.light .hero h2,.light .stats strong{color:#10243d}
+.light .hero p{color:#405976}
+.light .nav a{color:var(--text)}
+.light .btn-outline{color:#10243d;border-color:#8ba5c0}
+.light .ticker{background:#e4edf8}
+.light .ticker-text{color:#10243d}
+@media(min-width:900px){
+  .hero{padding:100px 0 85px}
+  .feature{padding:40px;min-height:360px}
+}
+@media(max-width:760px){
+  .container{width:91%}
+  .brand-row{padding:22px 0}
+  .logo{width:68px;height:68px;border-radius:22px}
+  .brand h1{font-size:30px}
+  .tagline{font-size:10px;letter-spacing:2px}
+  .theme-btn{width:50px;height:50px}
+  .nav a{padding:14px 17px;font-size:17px}
+  .hero{padding:65px 0 55px}
+  .hero h2{margin-top:31px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+  .card-body{padding:14px}
+  .card h3{font-size:18px}
+  .card-art{min-height:120px}
+  .category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-grid>div:first-child{grid-column:1/-1}
+}
+@media(max-width:420px){
+  .brand{gap:11px}
+  .brand h1{font-size:25px}
+  .logo{width:58px;height:58px;font-size:29px}
+  .tagline{font-size:8px;letter-spacing:1.3px}
+  .theme-btn{width:43px;height:43px;border-radius:14px}
+  .search-box{padding-left:13px;border-radius:19px}
+  .search-box input{font-size:15px}
+  .search-box button{padding:10px 14px}
+  .ticker-label{padding:9px 12px}
+  .grid{grid-template-columns:1fr}
+  .actions .btn{width:100%;font-size:17px}
+  .feature{padding:22px;border-radius:25px}
+  .section{padding:38px 0}
+}
+</style>
 </head>
+
 <body>
-  <div class="topbar">
-    <div class="container">📰 Social News — आपकी दुनिया, आपकी खबरें</div>
+
+<div class="ticker">
+  <div class="ticker-label">BREAKING</div>
+  <div class="ticker-text">
+    Social News पर आपका स्वागत है • ताज़ा खबरें पढ़ें • शिक्षा और उपयोगी जानकारी
   </div>
+</div>
 
-  <header>
-    <div class="container head">
-      <a class="brand" href="#home">Social <span>News</span></a>
-      <nav aria-label="मुख्य मेनू">
-        <a href="#top-news">News</a>
-        <a href="#live">Live</a>
-        <a href="#education">Education</a>
-        <a href="#government">सरकारी योजनाएँ</a>
-        <a href="#sports">Sports</a>
-        <a href="#tools">Tools</a>
-      </nav>
-      <button id="themeToggle" class="action" type="button">🌙 Theme</button>
+<header class="header">
+  <div class="container">
+    <div class="brand-row">
+      <a class="brand" href="#home" aria-label="Social News Home">
+        <div class="logo">▶</div>
+        <div>
+          <h1>Social <span>News</span></h1>
+          <div class="tagline">NEWS · LIVE · VIDEO · KNOWLEDGE</div>
+        </div>
+      </a>
+      <button class="theme-btn" id="themeBtn" aria-label="रंग बदलें">◐</button>
     </div>
-  </header>
 
-  <main>
-    <section class="hero" id="home">
-      <div class="container">
-        <span class="pill">YOUR DAILY INFORMATION HUB</span>
-        <h1>हर जरूरी जानकारी,<br>एक ही जगह।</h1>
-        <p>समाचार, शिक्षा, सरकारी योजनाएँ, खेल, मनोरंजन और रोजमर्रा के उपयोगी टूल्स — सब कुछ एक जगह पाने की कोशिश।</p>
-        <a class="button" href="#top-news">खबरें देखें ↓</a>
+    <form class="search-wrap" id="searchForm">
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input id="searchInput" type="search"
+          placeholder="खबरें, वीडियो, विषय खोजें..."
+          aria-label="खबर खोजें">
+        <button type="submit">खोजें</button>
       </div>
-    </section>
+    </form>
+  </div>
+</header>
 
-    <section class="section" id="top-news">
-      <div class="container">
-        <h2>📰 News & Updates</h2>
-        <p class="sub">नीचे दिए गए कार्ड अभी नमूना सामग्री हैं, सत्यापित लाइव खबरें नहीं।</p>
+<nav class="nav" aria-label="मुख्य मेन्यू">
+  <div class="container nav-inner">
+    <a class="active" href="#home">⌂ होम</a>
+    <a href="#news">▤ न्यूज़</a>
+    <a href="#live">⊙ Live TV</a>
+    <a href="#videos">▶ वीडियो</a>
+    <a href="#education">🎓 शिक्षा</a>
+    <a href="#jobs">💼 नौकरी</a>
+    <a href="#sports">🏆 खेल</a>
+    <a href="#quiz">🧠 क्विज़</a>
+  </div>
+</nav>
 
-        <form class="searchbar" id="searchForm">
-          <input id="searchInput" type="search" placeholder="खबर या विषय खोजें..." aria-label="खबर खोजें">
-          <button type="submit">खोजें</button>
-        </form>
-        <p id="resultCount" aria-live="polite">3 विषय</p>
+<main>
+<section class="hero" id="home">
+  <div class="container">
+    <div class="pill"><span class="dot"></span> SOCIAL NEWS</div>
 
-        <div class="grid" id="newsGrid">
-          <article class="card news-card">
-            <span class="emoji">🇮🇳</span>
-            <span class="pill">General</span>
-            <h3>भारत की महत्वपूर्ण जानकारी</h3>
-            <p>सरकारी घोषणाओं और सार्वजनिक सूचनाओं के लिए आधिकारिक स्रोत देखें।</p>
-            <a class="action" href="https://www.india.gov.in/" target="_blank" rel="noopener noreferrer">आधिकारिक पोर्टल</a>
-            <p><button type="button" class="action" data-save="भारत की महत्वपूर्ण जानकारी">☆ Save</button></p>
-          </article>
+    <h2>हर ज़रूरी खबर,<br><span>एक ही जगह।</span></h2>
 
-          <article class="card news-card">
-            <span class="emoji">🎓</span>
-            <span class="pill">Education</span>
-            <h3>शिक्षा और परीक्षा अपडेट</h3>
-            <p>परीक्षा, परिणाम और आवेदन की जानकारी संबंधित आधिकारिक वेबसाइट पर जाँचें।</p>
-            <a class="action" href="https://www.ncs.gov.in/" target="_blank" rel="noopener noreferrer">Career Portal</a>
-            <p><button type="button" class="action" data-save="शिक्षा और परीक्षा अपडेट">☆ Save</button></p>
-          </article>
+    <p>
+      समाचार, लाइव वीडियो, शिक्षा, सरकारी योजनाएँ और
+      रोज़मर्रा की जानकारी — सरल भाषा में।
+    </p>
 
-          <article class="card news-card">
-            <span class="emoji">🏛️</span>
-            <span class="pill">Government</span>
-            <h3>सरकारी योजनाएँ</h3>
-            <p>अपनी पात्रता और आवेदन की जानकारी आधिकारिक योजना पोर्टल पर जाँचें।</p>
-            <a class="action" href="https://www.myscheme.gov.in/" target="_blank" rel="noopener noreferrer">योजनाएँ देखें</a>
-            <p><button type="button" class="action" data-save="सरकारी योजनाएँ">☆ Save</button></p>
-          </article>
-        </div>
+    <div class="actions">
+      <a class="btn btn-primary" href="#news">आज की खबरें देखें →</a>
+      <a class="btn btn-outline" href="#live">Live Zone देखें</a>
+    </div>
 
-        <p id="emptyState" hidden>आपकी खोज से मेल खाती सामग्री नहीं मिली।</p>
-        <p class="notice">महत्वपूर्ण: आवेदन की अंतिम तारीख, परीक्षा परिणाम या सरकारी घोषणा की पुष्टि संबंधित आधिकारिक वेबसाइट से जरूर करें।</p>
+    <div class="stats">
+      <span><strong>01</strong> भरोसेमंद जानकारी</span>
+      <span><strong>24×7</strong> डिजिटल एक्सेस</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="ad-slot" aria-label="विज्ञापन स्थान">
+    विज्ञापन स्थान — AdSense मंज़ूरी के बाद यहाँ विज्ञापन जोड़ा जा सकता है
+  </div>
+</div>
+
+<section class="section" id="featured">
+  <div class="container">
+    <article class="feature">
+      <div class="feature-top">
+        <small>FEATURED STORY</small>
+        <span class="pill"><span class="dot"></span> LIVE ZONE</span>
       </div>
-    </section>
+      <div class="globe" aria-hidden="true">◎</div>
+      <div class="eyebrow">आज की प्रमुख जानकारी</div>
+      <h3>देश-दुनिया से लेकर आपके शहर तक</h3>
+      <p>महत्वपूर्ण खबरें और उपयोगी जानकारी एक ही जगह पाएँ।</p>
+      <a class="btn btn-primary" href="#news">खबरें पढ़ें →</a>
+    </article>
+  </div>
+</section>
 
-    <section class="section" id="live">
-      <div class="container">
-        <h2>📺 Live Video</h2>
-        <p class="sub">यह सेक्शन अधिकृत वीडियो जोड़ने के लिए तैयार है।</p>
-        <div class="card">
-          <button type="button" class="video-placeholder" aria-label="Live video demo">▶ Live Video</button>
-          <p class="notice">अभी यहाँ वास्तविक लाइव प्रसारण नहीं है। चलाने के लिए अपने चुने हुए चैनल का अधिकृत YouTube embed लिंक जोड़ना होगा।</p>
-        </div>
+<section class="section" id="news">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">LATEST UPDATES</div>
+        <h2>ताज़ा खबरें</h2>
+        <p>यहाँ अपनी सत्यापित और नवीनतम खबरें प्रकाशित करें।</p>
       </div>
-    </section>
+      <a href="#categories" class="text-link">सभी विषय →</a>
+    </div>
 
-    <section class="section" id="education">
-      <div class="container">
-        <h2>🎓 Education & Career</h2>
-        <p class="sub">पढ़ाई, करियर और रोजगार की जानकारी के लिए उपयोगी पोर्टल।</p>
-        <div class="grid">
-          <article class="card">
-            <div class="emoji">📚</div>
-            <h3>पढ़ाई और सीखना</h3>
-            <p>शैक्षणिक संसाधन और सरकारी शिक्षा पोर्टल देखें।</p>
-            <a href="https://diksha.gov.in/" target="_blank" rel="noopener noreferrer">DIKSHA पोर्टल ↗</a>
-          </article>
-          <article class="card">
-            <div class="emoji">💼</div>
-            <h3>नौकरी और करियर</h3>
-            <p>रोजगार संबंधी सेवाओं की जानकारी।</p>
-            <a href="https://www.ncs.gov.in/" target="_blank" rel="noopener noreferrer">National Career Service ↗</a>
-          </article>
-          <article class="card">
-            <div class="emoji">📝</div>
-            <h3>परीक्षा जानकारी</h3>
-            <p>आवेदन और परीक्षा संबंधी जानकारी के लिए संबंधित भर्ती संस्था की आधिकारिक वेबसाइट देखें।</p>
-            <a href="https://ssc.gov.in/" target="_blank" rel="noopener noreferrer">SSC आधिकारिक वेबसाइट ↗</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="government">
-      <div class="container">
-        <h2>🏛️ Government Services</h2>
-        <p class="sub">योजनाओं और नागरिक सेवाओं के लिए आधिकारिक पोर्टल।</p>
-
-        <div class="grid">
-          <article class="card">
-            <div class="emoji">🇮🇳</div>
-            <h3>National Portal of India</h3>
-            <p>भारत सरकार की जानकारी और सेवाएँ।</p>
-            <a href="https://www.india.gov.in/" target="_blank" rel="noopener noreferrer">पोर्टल खोलें ↗</a>
-          </article>
-          <article class="card">
-            <div class="emoji">🤝</div>
-            <h3>MyScheme</h3>
-            <p>सरकारी योजनाओं की पात्रता और जानकारी खोजें।</p>
-            <a href="https://www.myscheme.gov.in/" target="_blank" rel="noopener noreferrer">योजना खोजें ↗</a>
-          </article>
-          <article class="card">
-            <div class="emoji">🛡️</div>
-            <h3>Cyber Safety</h3>
-            <p>साइबर सुरक्षा और शिकायत के लिए आधिकारिक जानकारी देखें।</p>
-            <a href="https://cybercrime.gov.in/" target="_blank" rel="noopener noreferrer">Cyber Crime Portal ↗</a>
-          </article>
-        </div>
-
-        <p class="notice">Social News एक स्वतंत्र सूचना वेबसाइट है; यह भारत सरकार की आधिकारिक वेबसाइट नहीं है।</p>
-      </div>
-    </section>
-
-    <section class="section" id="sports">
-      <div class="container">
-        <h2>🏏 Sports</h2>
-        <p class="sub">खेल समाचार और परिणाम के लिए संबंधित स्रोत देखें।</p>
-        <div class="grid">
-          <article class="card">
-            <div class="emoji">🏏</div>
-            <h3>Cricket</h3>
-            <p>क्रिकेट की जानकारी और अपडेट।</p>
-            <a href="https://www.bcci.tv/" target="_blank" rel="noopener noreferrer">BCCI ↗</a>
-          </article>
-          <article class="card">
-            <div class="emoji">⚽</div>
-            <h3>Football</h3>
-            <p>फुटबॉल की जानकारी और अपडेट।</p>
-            <a href="https://www.the-aiff.com/" target="_blank" rel="noopener noreferrer">AIFF ↗</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="entertainment">
-      <div class="container">
-        <h2>🎬 Entertainment</h2>
-        <p class="sub">मनोरंजन से जुड़ी सामग्री का सेक्शन।</p>
-        <div class="card">
-          <h3>Movies, Videos & Culture</h3>
-          <p>यहाँ भविष्य में लाइसेंस प्राप्त वीडियो, मनोरंजन समाचार और सांस्कृतिक अपडेट जोड़े जा सकते हैं।</p>
-          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube खोलें ↗</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="tools">
-      <div class="container">
-        <h2>🧮 Useful Daily Tools</h2>
-        <p class="sub">बेसिक कैलकुलेटर — इंटरनेट के बिना भी काम कर सकता है।</p>
-        <div class="card">
-          <div class="tool-row">
-            <input class="tool-input" id="calcA" type="number" step="any" placeholder="पहली संख्या" aria-label="पहली संख्या">
-            <select id="calcOp" aria-label="गणित का ऑपरेशन">
-              <option value="+">जोड़ (+)</option>
-              <option value="-">घटाव (-)</option>
-              <option value="*">गुणा (×)</option>
-              <option value="/">भाग (÷)</option>
-            </select>
-            <input class="tool-input" id="calcB" type="number" step="any" placeholder="दूसरी संख्या" aria-label="दूसरी संख्या">
-            <button class="action" id="calculateBtn" type="button">Calculate</button>
+    <div class="grid" id="newsGrid">
+      <article class="card searchable">
+        <div class="card-art">📰</div>
+        <div class="card-body">
+          <div class="category">भारत</div>
+          <h3>देश की प्रमुख खबरें</h3>
+          <p>यह डेमो कार्ड है। इसमें वास्तविक खबर और स्रोत जोड़ें।</p>
+          <div class="meta">डेमो सामग्री · वास्तविक समाचार नहीं</div>
+          <div class="card-actions">
+            <button class="small-btn save-btn">☆ सेव</button>
+            <button class="small-btn share-btn">↗ शेयर</button>
           </div>
-          <h3 id="calcResult" aria-live="polite">परिणाम यहाँ दिखेगा।</h3>
         </div>
+      </article>
 
-        <div class="card" style="margin-top:16px">
-          <h3>⭐ Saved News</h3>
-          <p>जिन खबरों को Save करेंगे, वे इसी ब्राउज़र में सहेजी जा सकती हैं।</p>
-          <p id="savedList">अभी कोई सेव की गई खबर नहीं है।</p>
+      <article class="card searchable" id="education">
+        <div class="card-art">🎓</div>
+        <div class="card-body">
+          <div class="category">शिक्षा</div>
+          <h3>परीक्षा और शिक्षा अपडेट</h3>
+          <p>परीक्षा, एडमिट कार्ड और रिजल्ट के आधिकारिक लिंक।</p>
+          <div class="meta">डेमो सामग्री</div>
+          <div class="card-actions">
+            <button class="small-btn save-btn">☆ सेव</button>
+            <button class="small-btn share-btn">↗ शेयर</button>
+          </div>
         </div>
-      </div>
-    </section>
+      </article>
 
-    <section class="section" id="about">
-      <div class="container">
-        <h2>ℹ️ About Social News</h2>
-        <div class="card">
-          <p>Social News का उद्देश्य उपयोगकर्ताओं को समाचार, शिक्षा, सरकारी पोर्टल, खेल और दैनिक उपयोगी जानकारी एक जगह उपलब्ध कराने में मदद करना है।</p>
-          <p>यह वेबसाइट स्वतंत्र है। संबंधित खबरों और सेवाओं की सत्यता की पुष्टि मूल स्रोत से करें।</p>
+      <article class="card searchable" id="jobs">
+        <div class="card-art">💼</div>
+        <div class="card-body">
+          <div class="category">सरकारी नौकरी</div>
+          <h3>नौकरी और भर्ती जानकारी</h3>
+          <p>भर्ती की जानकारी के साथ संबंधित आधिकारिक वेबसाइट दें।</p>
+          <div class="meta">डेमो सामग्री</div>
+          <div class="card-actions">
+            <button class="small-btn save-btn">☆ सेव</button>
+            <button class="small-btn share-btn">↗ शेयर</button>
+          </div>
         </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <h2>Social News</h2>
-      <p>आपकी दुनिया, आपकी खबरें।</p>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms & Conditions</a>
-      <p>© <span id="year"></span> Social News. All rights reserved.</p>
+      </article>
     </div>
-  </footer>
+    <p id="searchStatus" role="status"></p>
+  </div>
+</section>
 
-  <div id="toast" role="status" hidden></div>
-  <script src="script.js" defer></script>
+<section class="section" id="categories">
+  <div class="container">
+    <div class="eyebrow">EXPLORE</div>
+    <h2>हर जानकारी, एक ही जगह</h2>
+    <p style="color:var(--muted)">अपनी पसंद का विषय चुनें।</p>
+
+    <div class="category-grid">
+      <a class="category-card" href="#news"><div class="emoji">🇮🇳</div><h3>भारत</h3><p>देश की खबरें</p></a>
+      <a class="category-card" href="#news"><div class="emoji">🌍</div><h3>दुनिया</h3><p>अंतरराष्ट्रीय</p></a>
+      <a class="category-card" href="#jobs"><div class="emoji">💼</div><h3>सरकारी नौकरी</h3><p>भर्ती और परीक्षा</p></a>
+      <a class="category-card" href="#education"><div class="emoji">🎓</div><h3>शिक्षा</h3><p>पढ़ाई और रिजल्ट</p></a>
+      <a class="category-card" href="#sports"><div class="emoji">🏏</div><h3>क्रिकेट</h3><p>खेल अपडेट</p></a>
+      <a class="category-card" href="#videos"><div class="emoji">🎬</div><h3>मनोरंजन</h3><p>फिल्म और वीडियो</p></a>
+      <a class="category-card" href="#weather"><div class="emoji">🌦️</div><h3>मौसम</h3><p>मौसम की जानकारी</p></a>
+      <a class="category-card" href="#quiz"><div class="emoji">🧠</div><h3>ज्ञान क्विज़</h3><p>रोज़ नए सवाल</p></a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="live">
+  <div class="container">
+    <div class="eyebrow">WATCH NOW</div>
+    <h2>Live Zone</h2>
+    <p style="color:var(--muted)">अधिकृत लाइव स्ट्रीम का URL कॉन्फ़िगर करने पर वीडियो यहाँ चलाएँ।</p>
+    <div class="live-panel">
+      <video class="video" id="livePlayer" controls playsinline
+        preload="none" poster="">
+        आपका ब्राउज़र वीडियो चलाने में सक्षम नहीं है।
+      </video>
+      <p class="live-note" id="liveStatus" role="status">
+        अभी कोई लाइव स्ट्रीम कॉन्फ़िगर नहीं है।
+      </p>
+      <button class="btn btn-outline" id="playLive">लाइव वीडियो खोलें</button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="videos">
+  <div class="container">
+    <div class="eyebrow">VIDEO HUB</div>
+    <h2>वीडियो और खास रिपोर्ट</h2>
+    <div class="grid">
+      <article class="card">
+        <div class="card-art">▶️</div>
+        <div class="card-body">
+          <h3>आज की बड़ी खबरें</h3>
+          <p>अपना अधिकृत वीडियो URL जोड़ें।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art">🎥</div>
+        <div class="card-body">
+          <h3>खास रिपोर्ट</h3>
+          <p>वीडियो सामग्री और उसके स्रोत का विवरण जोड़ें।</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-art">📡</div>
+        <div class="card-body">
+          <h3>Live Updates</h3>
+          <p>उपलब्ध अधिकृत स्ट्रीम की जानकारी दिखाएँ।</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="sports">
+  <div class="container">
+    <div class="eyebrow">SPORTS DESK</div>
+    <h2>खेल जगत</h2>
+    <div class="live-panel">
+      <h3>🏏 क्रिकेट और खेल अपडेट</h3>
+      <p class="live-note">असली लाइव स्कोर के लिए वैध स्पोर्ट्स API जोड़ना आवश्यक है।</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="weather">
+  <div class="container">
+    <div class="eyebrow">DAILY INFORMATION</div>
+    <h2>मौसम और उपयोगी जानकारी</h2>
+    <div class="live-panel">
+      <h3>🌦️ आपके शहर का मौसम</h3>
+      <p class="live-note">वर्तमान मौसम दिखाने के लिए मौसम API जोड़ें। यहाँ अभी कोई लाइव मौसम डेटा नहीं है।</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="quiz">
+  <div class="container">
+    <div class="eyebrow">DAILY KNOWLEDGE</div>
+    <h2>आज का ज्ञान क्विज़</h2>
+    <div class="live-panel">
+      <div class="quiz-question">भारत की राजधानी कौन-सी है?</div>
+      <div class="quiz-options" id="quizOptions">
+        <button class="quiz-option" data-correct="false">मुंबई</button>
+        <button class="quiz-option" data-correct="true">नई दिल्ली</button>
+        <button class="quiz-option" data-correct="false">जयपुर</button>
+        <button class="quiz-option" data-correct="false">लखनऊ</button>
+      </div>
+      <p class="quiz-result" id="quizResult" role="status"></p>
+      <button class="btn btn-outline" id="resetQuiz">फिर से खेलें</button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="container">
+    <div class="newsletter">
+      <div class="eyebrow">STAY CONNECTED</div>
+      <h2>Social News से जुड़े रहें</h2>
+      <p>यह डेमो फॉर्म है। ईमेल सबमिशन चालू करने के लिए बैकएंड या फॉर्म सेवा जोड़ें।</p>
+      <form id="newsletterForm">
+        <input type="email" id="emailInput" placeholder="आपका ईमेल पता" required>
+        <button type="submit">अपडेट पाएँ</button>
+      </form>
+      <p id="formStatus" role="status"></p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <h3>Social News</h3>
+      <p>हर ज़रूरी खबर, एक ही जगह।</p>
+      <p>सत्यापित जानकारी और आधिकारिक स्रोत हमारी प्राथमिकता हैं।</p>
+    </div>
+    <div>
+      <h3>मुख्य पेज</h3>
+      <a href="#home">होम</a>
+      <a href="#news">ताज़ा खबरें</a>
+      <a href="#live">Live Zone</a>
+      <a href="#jobs">सरकारी नौकरी</a>
+    </div>
+    <div>
+      <h3>जानकारी</h3>
+      <a href="#contact">संपर्क</a>
+      <a href="#privacy">प्राइवेसी पॉलिसी</a>
+      <a href="#terms">नियम एवं शर्तें</a>
+    </div>
+  </div>
+  <div class="container">
+    <hr style="border:0;border-top:1px solid var(--border);margin:25px 0">
+    <small>© <span id="year"></span> Social News. सर्वाधिकार सुरक्षित।</small>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+const $ = (selector) => document.querySelector(selector);
+
+$("#year").textContent = new Date().getFullYear();
+
+// Dark / light theme
+$("#themeBtn").addEventListener("click", () => {
+  document.body.classList.toggle("light");
+  const light = document.body.classList.contains("light");
+  $("#themeBtn").textContent = light ? "☾" : "◐";
+  document.querySelector('meta[name="theme-color"]')
+    .setAttribute("content", light ? "#f2f6fc" : "#071a31");
+});
+
+// Search cards
+$("#searchForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const query = $("#searchInput").value.trim().toLocaleLowerCase("hi");
+  let found = 0;
+
+  document.querySelectorAll(".searchable").forEach((card) => {
+    const match = card.textContent.toLocaleLowerCase("hi").includes(query);
+    card.hidden = Boolean(query) && !match;
+    if (match) found++;
+  });
+
+  $("#searchStatus").textContent = query
+    ? (found ? `${found} परिणाम मिले।` : "कोई परिणाम नहीं मिला।")
+    : "सभी डेमो कार्ड दिखाए जा रहे हैं।";
+
+  $("#news").scrollIntoView({behavior:"smooth"});
+});
+
+// Save bookmarks locally in this browser
+function getSaved() {
+  try {
+    return JSON.parse(localStorage.getItem("socialNewsBookmarks") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function updateSaveButtons() {
+  const saved = getSaved();
+  document.querySelectorAll(".save-btn").forEach((button) => {
+    const title = button.closest(".card").querySelector("h3").textContent;
+    const isSaved = saved.includes(title);
+    button.textContent = isSaved ? "★ सेव्ड" : "☆ सेव";
+  });
+}
+
+document.querySelectorAll(".save-btn").forEach((button) => {
+  button.addEventListener("click", () => {
+    const title = button.closest(".card").querySelector("h3").textContent;
+    let saved = getSaved();
+
+    saved = saved.includes(title)
+      ? saved.filter((item) => item !== title)
+      : [...saved, title];
+
+    localStorage.setItem("socialNewsBookmarks", JSON.stringify(saved));
+    updateSaveButtons();
+  });
+});
+
+updateSaveButtons();
+
+// Share
+document.querySelectorAll(".share-btn").forEach((button) => {
+  button.addEventListener("click", async () => {
+    const card = button.closest(".card");
+    const title = card.querySelector("h3").textContent;
+    const text = `${title} — Social News`;
+    try {
+      if (navigator.share) {
+        await navigator.share({title, text, url:location.href});
+      } else if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(`${text} ${location.href}`);
+        alert("शेयर लिंक कॉपी हो गया।");
+      } else {
+        prompt("इस लिंक को कॉपी करें:", location.href);
+      }
+    } catch (error) {
+      if (error.name !== "AbortError") console.error(error);
+    }
+  });
+});
+
+// Demo quiz
+$("#quizOptions").addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+  if (!button) return;
+
+  document.querySelectorAll(".quiz-option").forEach((option) => {
+    option.disabled = true;
+  });
+
+  $("#quizResult").textContent =
+    button.dataset.correct === "true"
+      ? "सही जवाब! बहुत बढ़िया 🎉"
+      : "सही जवाब: नई दिल्ली। अगली बार फिर कोशिश करें।";
+});
+
+$("#resetQuiz").addEventListener("click", () => {
+  document.querySelectorAll(".quiz-option").forEach((option) => {
+    option.disabled = false;
+  });
+  $("#quizResult").textContent = "";
+});
+
+// Demo newsletter form: does not send or save an email
+$("#newsletterForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  $("#formStatus").textContent =
+    "यह केवल डेमो है। ईमेल अपडेट चालू करने के लिए सुरक्षित फॉर्म सेवा जोड़ें।";
+});
+
+// Live stream: configure only an authorized HTTPS stream URL here.
+const LIVE_STREAM_URL = "";
+
+$("#playLive").addEventListener("click", () => {
+  const status = $("#liveStatus");
+  const player = $("#livePlayer");
+
+  if (!LIVE_STREAM_URL) {
+    status.textContent =
+      "लाइव वीडियो उपलब्ध नहीं है। पहले अधिकृत लाइव स्ट्रीम URL कॉन्फ़िगर करें।";
+    return;
+  }
+
+  if (!/^https:\/\//i.test(LIVE_STREAM_URL)) {
+    status.textContent = "सुरक्षा के लिए HTTPS वीडियो URL आवश्यक है।";
+    return;
+  }
+
+  player.src = LIVE_STREAM_URL;
+  player.load();
+  player.play().then(() => {
+    status.textContent = "वीडियो चल रहा है।";
+  }).catch(() => {
+    status.textContent =
+      "वीडियो शुरू नहीं हुआ। URL, स्ट्रीम फॉर्मेट और ब्राउज़र सपोर्ट जाँचें।";
+  });
+});
+
+// Active navigation highlighting
+const navLinks = document.querySelectorAll(".nav a");
+navLinks.forEach((link) => {
+  link.addEventListener("click", () => {
+    navLinks.forEach((item) => item.classList.remove("active"));
+    link.classList.add("active");
+  });
+});
+</script>
 </body>
 </html>
-```
