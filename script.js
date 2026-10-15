@@ -206,4 +206,60 @@
 
   // Keep all category and section links working as normal anchors.
   console.log("Social News: JavaScript initialized successfully.");
-})();
+
+  // Government scheme information shown inside Social News
+  const schemeSelect = $("#schemeSelect");
+  const schemeViewBtn = $("#schemeViewBtn");
+  const schemeDetails = $("#schemeDetails");
+
+  const schemeInfo = {
+    education: {
+      title: "शिक्षा और छात्रवृत्ति",
+      text: "छात्रवृत्ति की पात्रता, आय सीमा, कक्षा और आवेदन की अंतिम तारीख योजना के अनुसार अलग-अलग होती है। आवेदन से पहले संबंधित योजना की आधिकारिक शर्तें जाँचें।",
+      url: "https://scholarships.gov.in/"
+    },
+    farmer: {
+      title: "किसान योजनाएँ",
+      text: "किसानों के लिए योजनाओं में पात्रता, ज़मीन के रिकॉर्ड और दूसरे नियम अलग-अलग हो सकते हैं। अपनी योजना की मौजूदा शर्तें आधिकारिक स्रोत से सत्यापित करें।",
+      url: "https://www.india.gov.in/"
+    },
+    employment: {
+      title: "रोज़गार और कौशल",
+      text: "रोज़गार सेवाओं, कौशल प्रशिक्षण और भर्ती की जानकारी देखें। आवेदन की तारीख और पात्रता संबंधित योजना के आधिकारिक नोटिस से जाँचें।",
+      url: "https://www.ncs.gov.in/"
+    },
+    women: {
+      title: "महिला कल्याण",
+      text: "महिला कल्याण योजनाओं के लाभ, आय सीमा, पात्रता और दस्तावेज़ योजना तथा राज्य के अनुसार बदलते हैं। आवेदन से पहले आधिकारिक विवरण पढ़ें।",
+      url: "https://www.myscheme.gov.in/"
+    }
+  };
+
+  if (schemeViewBtn && schemeSelect && schemeDetails) {
+    schemeViewBtn.addEventListener("click", () => {
+      const info = schemeInfo[schemeSelect.value];
+
+      if (!info) {
+        schemeDetails.hidden = false;
+        schemeDetails.textContent = "पहले एक श्रेणी चुनें।";
+        return;
+      }
+
+      schemeDetails.replaceChildren();
+
+      const heading = document.createElement("h4");
+      heading.textContent = info.title;
+
+      const paragraph = document.createElement("p");
+      paragraph.textContent = info.text;
+
+      const link = document.createElement("a");
+      link.href = info.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = "आधिकारिक जानकारी और आवेदन देखें";
+
+      schemeDetails.append(heading, paragraph, link);
+      schemeDetails.hidden = false;
+    });
+       })();
